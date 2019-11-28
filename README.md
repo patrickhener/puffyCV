@@ -1,5 +1,5 @@
 # puffyCV
-Dart score recognition using openCV
+Dart score recognition using openCV (This is a rewrite and progression of what Niels Lüdemann did with [cvDarts](https://github.com/nluede/cvdarts))
 
 ## Installation
 TODO
