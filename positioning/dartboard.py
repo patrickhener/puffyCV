@@ -60,14 +60,27 @@ class Board(object):
         ]
 
     def print(self):
+        print("-----------")
         for f in self.fields:
-            print(f.score)
+            print("Segment: {}".format(f.score))
 
-            x, y = f.get_coordinates_top_left()
+            x_left, y_left = f.get_coordinates_top_left()
+            x_right, y_right = f.get_coordinates_top_right()
+            x_center, y_center = f.get_coordinates_top_center()
 
-            print("Angle: " + str(f.left_angle()))
-            print("X: " + str(x) + ", Y: " + str(y))
-            print("")
+            print("Left Angle: " + str(f.left_angle()))
+            print("Center Angle: " + str(f.center_angle()))
+            print("Right Angle: " + str(f.right_angle()))
+            print("Coordinates Top Left")
+            print("X: " + str(x_left))
+            print("Y: " + str(y_left))
+            print("Coordinates Top Center")
+            print("X: " + str(x_center))
+            print("Y: " + str(y_center))
+            print("Coordinates Top Right")
+            print("X: " + str(x_right))
+            print("Y: " + str(y_right))
+            print("-----------")
 
 
 class BoardField(object):
@@ -78,9 +91,26 @@ class BoardField(object):
     def left_angle(self):
         result = self.angle - 9
         if result < 0:
-            result = result + 360
+            result += 360
+        return result
+
+    def center_angle(self):
+        return self.angle
+
+    def right_angle(self):
+        result = self.angle + 9
+        if result > 360:
+            result -= 360
         return result
 
     def get_coordinates_top_left(self):
         angle = self.left_angle()
+        return round(math.cos(math.radians(angle)), 4), round(math.sin(math.radians(angle)), 4)
+
+    def get_coordinates_top_center(self):
+        angle = self.center_angle()
+        return round(math.cos(math.radians(angle)), 4), round(math.sin(math.radians(angle)), 4)
+
+    def get_coordinates_top_right(self):
+        angle = self.right_angle()
         return round(math.cos(math.radians(angle)), 4), round(math.sin(math.radians(angle)), 4)

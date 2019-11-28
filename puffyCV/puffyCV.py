@@ -12,7 +12,7 @@ from puffyCV.logging import log
 from puffyCV.gameloop import GameLoop
 from config.config_repo import create_config, put_config_for_device, find_config_for_device
 from imageprocessing.capturingdevice import WebCamCapturingDevice
-from connector.sender import ScoreboardConnector
+from positioning.dartboard import Board
 
 devices = []
 
@@ -64,8 +64,9 @@ def main():
         initialize_real_devices()
         configure_devices()
     elif args.MODE == "mytest":
-        pass
-        # sender = ScoreboardConnector("127.0.0.1", "5000")
+        # pass
+        board = Board()
+        board.print()
         # sender.send_throw("20","3")
     elif args.MODE == "mytest2":
         pass
