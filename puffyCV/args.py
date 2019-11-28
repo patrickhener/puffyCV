@@ -21,13 +21,6 @@ parser.add_argument(
 )
 
 parser.add_argument(
-    '-c',
-    '--config',
-    help='sum the integers (default: find the max)',
-    action="store_true"
-)
-
-parser.add_argument(
     '-sh',
     '--scoreboard-host',
     dest="SB-HOST",

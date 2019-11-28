@@ -56,16 +56,15 @@ def main():
         print("puffyCV recognition started")
         puffyCV.recognition.start_recognition()
     elif args.MODE == "cal":
-        print("puffyCV calibration started")
-        puffyCV.calibration.start_calibration()
+        log.info("puffyCV calibration started")
+        create_config()
+        initialize_real_devices()
+        configure_devices()
     elif args.MODE == "mytest":
         create_config()
         initialize_real_devices()
-        if args.config:
-            configure_devices()
-        else:
-            game_loop = GameLoop(devices)
-            game_loop.run()
+        game_loop = GameLoop(devices)
+        game_loop.run()
 
     else:
         print("Invalid mode selected. Please refer to README.")
