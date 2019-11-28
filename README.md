@@ -14,7 +14,7 @@ TODO
 This project is a darts recognition software to provide an automated steel darts machine using openCV and several webcams.
 
 # Documentation
-For documentation refer to:
+For documentation refer to:  
 [https://readthedocs.org/projects/puffyCV](https://puffyCV.readthedocs.io/en/latest)  
 [![Documentation Status](https://readthedocs.org/projects/puffycv/badge/?version=latest)](https://puffycv.readthedocs.io/en/latest/?badge=latest)
 
