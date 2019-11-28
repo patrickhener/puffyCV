@@ -1,0 +1,8 @@
+*.pyc
+.idea/
+.venv/
+.vscode
+__pychache__
+/docs/_build
+/docs/_static
+/docs/_templates
