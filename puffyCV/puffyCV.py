@@ -12,6 +12,7 @@ from puffyCV.logging import log
 from puffyCV.gameloop import GameLoop
 from config.config_repo import create_config, put_config_for_device, find_config_for_device
 from imageprocessing.capturingdevice import WebCamCapturingDevice
+from connector.sender import ScoreboardConnector
 
 devices = []
 
@@ -53,18 +54,23 @@ def configure_devices():
 def main():
     signal.signal(signal.SIGINT, signal_handler)
     if args.MODE == "run":
-        print("puffyCV recognition started")
-        puffyCV.recognition.start_recognition()
+        create_config()
+        initialize_real_devices()
+        game_loop = GameLoop(devices)
+        game_loop.run()
     elif args.MODE == "cal":
         log.info("puffyCV calibration started")
         create_config()
         initialize_real_devices()
         configure_devices()
     elif args.MODE == "mytest":
-        create_config()
-        initialize_real_devices()
-        game_loop = GameLoop(devices)
-        game_loop.run()
+        pass
+        # sender = ScoreboardConnector("127.0.0.1", "5000")
+        # sender.send_throw("20","3")
+    elif args.MODE == "mytest2":
+        pass
+        # sender = ScoreboardConnector("127.0.0.1", "5000")
+        # sender.send_next()
 
     else:
         print("Invalid mode selected. Please refer to README.")
