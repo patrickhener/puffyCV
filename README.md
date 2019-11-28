@@ -16,7 +16,7 @@ This project is a darts recognition software to provide an automated steel darts
 # Documentation
 For documentation refer to:
 [https://readthedocs.org/projects/puffyCV](https://puffyCV.readthedocs.io/en/latest)
-[![Documentation Status](https://readthedocs.org/projects/puffyCV/badge/?version=latest)](https://puffyCV.readthedocs.io/en/latest/?badge=latest)
+[![Documentation Status](https://readthedocs.org/projects/puffycv/badge/?version=latest)](https://puffycv.readthedocs.io/en/latest/?badge=latest)
 
 # Donate
 If you like this project and want to leave me a cup of coffee or an icecold German beer:
