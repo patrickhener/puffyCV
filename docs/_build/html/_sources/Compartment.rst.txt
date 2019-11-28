@@ -1,0 +1,5 @@
+.. _Compartment:
+
+================
+Building Example
+================

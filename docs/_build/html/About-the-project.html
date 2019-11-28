@@ -1,0 +1,232 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>About the project &mdash; puffyCV  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Installation" href="Installation.html" />
+    <link rel="prev" title="Welcome to puffyCV’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> puffyCV
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">About the project</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-idea">The idea</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-structure">The structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#a-few-words-on-the-coding-language">A few words on the coding language</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ready-to-start">Ready to start?</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Calibration.html">Calibration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Compartment.html">Building Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="TODOs.html">TODOs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">puffyCV</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>About the project</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/About-the-project.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="about-the-project">
+<h1>About the project<a class="headerlink" href="#about-the-project" title="Permalink to this headline">¶</a></h1>
+<p>Playing steel darts and counting score by hand or by a mobile app was kind of a bummer for me. So first I designed a scoreboard app to track dart games. But at that point I was just using them like any other mobile app to keep track of the score. So this project was born.</p>
+<div class="section" id="the-idea">
+<h2>The idea<a class="headerlink" href="#the-idea" title="Permalink to this headline">¶</a></h2>
+<p>I was thinking of a system with multiple cameras pointed at the scoreboard from above. It should use video capturing and image processing to determine where the dart hit the board.</p>
+</div>
+<div class="section" id="the-structure">
+<h2>The structure<a class="headerlink" href="#the-structure" title="Permalink to this headline">¶</a></h2>
+<p>The software is supposed to run either on a mini computer like a raspberry pi or any other hardware like a real computer or latop, running linux, next to the dart board. There are several webcams (2-4) hooked up to the system which are above the board. You are using a normal steel dart board and normal steel darts and you will not have to buy any special dart hardware. The complete system might be built into a sleek compartment housing all together with additional LED-stripes for good lighting (Also refer to <a class="reference internal" href="Compartment.html#compartment"><span class="std std-ref">the building example</span></a> for details).</p>
+</div>
+<div class="section" id="a-few-words-on-the-coding-language">
+<h2>A few words on the coding language<a class="headerlink" href="#a-few-words-on-the-coding-language" title="Permalink to this headline">¶</a></h2>
+<p>As I am using python a lot at work it came naturally to me to use python here as well.
+Also I think it will address a broad community if someone wants to contribute.</p>
+</div>
+<div class="section" id="ready-to-start">
+<h2>Ready to start?<a class="headerlink" href="#ready-to-start" title="Permalink to this headline">¶</a></h2>
+<p>So you feel like you want to test it out yourself? Then go ahead and check out how to <a class="reference internal" href="Installation.html#installation"><span class="std std-ref">install</span></a> everything.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Installation.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to puffyCV’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Patrick Hener
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
