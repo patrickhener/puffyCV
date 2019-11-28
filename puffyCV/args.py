@@ -1,6 +1,8 @@
 import argparse
 from puffyCV._version import __version__
 
+global args
+
 parser = argparse.ArgumentParser(
     description="Software to recognise Steel Darts thrown to a board using multiple cameras and openCV"
 )
@@ -9,6 +11,20 @@ parser.add_argument(
     dest="MODE",
     type=str,
     help="which mode to use: either 'run' for recognising darts or 'cal' for calibration of webcams"
+)
+
+parser.add_argument(
+    'DEVICE_IDS',
+    type=int,
+    nargs='+',
+    help='device ids for the devices that should be used'
+)
+
+parser.add_argument(
+    '-c',
+    '--config',
+    help='sum the integers (default: find the max)',
+    action="store_true"
 )
 
 parser.add_argument(
