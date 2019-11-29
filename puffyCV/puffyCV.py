@@ -4,6 +4,7 @@
 import logging
 import signal
 import sys
+import cv2
 
 import puffyCV.calibration
 import puffyCV.recognition
@@ -12,6 +13,7 @@ from puffyCV.logging import log
 from puffyCV.gameloop import GameLoop
 from config.config_repo import create_config, put_config_for_device, find_config_for_device
 from imageprocessing.capturingdevice import WebCamCapturingDevice
+from imageprocessing.draw import Draw
 from positioning.dartboard import Board
 
 devices = []
@@ -64,14 +66,16 @@ def main():
         initialize_real_devices()
         configure_devices()
     elif args.MODE == "mytest":
-        # pass
         board = Board()
         board.print()
-        # sender.send_throw("20","3")
     elif args.MODE == "mytest2":
-        pass
-        # sender = ScoreboardConnector("127.0.0.1", "5000")
-        # sender.send_next()
+        draw = Draw(900)
+        img = draw.projection_prepare()
+        while True:
+            cv2.imshow("test", img)
+            c = cv2.waitKey(1)
+            if 'q' == chr(c & 255):
+                break
 
     else:
         print("Invalid mode selected. Please refer to README.")

@@ -93,6 +93,10 @@ class WebCamCapturingDevice(CapturingDevice):
 
             image = cv2.line(image, (0, dartboard_level), (self.image_width, dartboard_level), (0, 255, 0), 1)
 
+            # Center line for bull adjustment
+            image = cv2.line(image, (int(self.image_width/2), 0), (int(self.image_width/2), int(self.image_height)),
+                             (255, 0, 0), 2)
+
             # Display the resulting frame
             cv2.imshow('frame', image)
             c = cv2.waitKey(1)
