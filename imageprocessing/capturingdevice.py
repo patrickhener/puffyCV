@@ -1,9 +1,33 @@
 import cv2
 import numpy as np
+from puffyCV.args import args
+from config.config_repo import put_config_for_device, find_config_for_device
 
 # Threshold for the image difference of two frames. Value between 0 and 255. 0 means that there needs to be no
 # difference between two successive frames (which is obviously a bad idea), 255 is the biggest possible difference.
-IMAGE_DIFFERENCE_THRESHOLD = 100
+IMAGE_DIFFERENCE_THRESHOLD = 50
+
+
+def initialize_real_devices():
+    devices = []
+    for device_id in args.DEVICE_IDS:
+        config_of_device = find_config_for_device(device_id)
+        dartboard_level_from_config = 0
+        if config_of_device is not None:
+            dartboard_level_from_config = config_of_device[1]
+        devices.append(WebCamCapturingDevice(device_id, dartboard_level_from_config))
+
+    return devices
+
+
+def configure_devices(devices):
+    for device in devices:
+        config_of_device = find_config_for_device(device.device_number)
+        level_loaded_from_config = 0
+        if config_of_device is not None:
+            level_loaded_from_config = config_of_device[1]
+        dartboard_level = device.configure(level_loaded_from_config)
+        put_config_for_device(device.device_number, dartboard_level)
 
 
 def get_capture_device(device_number, image_width, image_height):
@@ -108,4 +132,5 @@ class WebCamCapturingDevice(CapturingDevice):
             elif 'k' == chr(c & 255):
                 if dartboard_level > 0:
                     dartboard_level -= 5
+
         return dartboard_level

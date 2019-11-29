@@ -6,7 +6,7 @@ Repository class to persist the configuration of the individual devices
 
 
 def create_config():
-    conn = sqlite3.connect('configuration.db')
+    conn = sqlite3.connect('database/configuration.db')
     cursor = conn.cursor()
 
     cursor.execute("""
@@ -21,7 +21,7 @@ def create_config():
 
 
 def put_config_for_device(device_id, dartboard_level):
-    conn = sqlite3.connect('configuration.db')
+    conn = sqlite3.connect('database/configuration.db')
     cursor = conn.cursor()
 
     cursor.execute("INSERT OR REPLACE INTO configuration VALUES (" +
@@ -35,7 +35,7 @@ def put_config_for_device(device_id, dartboard_level):
 
 
 def find_config_for_device(device_id):
-    conn = sqlite3.connect('configuration.db')
+    conn = sqlite3.connect('database/configuration.db')
     cursor = conn.cursor()
 
     cursor.execute("SELECT * FROM configuration WHERE device_id=" + str(device_id))
