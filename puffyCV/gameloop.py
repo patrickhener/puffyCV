@@ -45,7 +45,7 @@ class GameLoop:
         while self.capturing:
             time_elapsed = time.time() - prev
             # TODO find a way to free cpu time (non-blocking) and remove sleep
-            sleep(0.01)
+            sleep(0.2)
             if is_frame_at_frame_rate(self.frames_per_second, int(time_elapsed)):
                 prev = time.time()
                 self.process()

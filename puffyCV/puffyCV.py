@@ -12,7 +12,6 @@ from puffyCV.gameloop import GameLoop
 from config.config_repo import create_config
 from imageprocessing.capturingdevice import initialize_real_devices, configure_devices
 from imageprocessing.draw import Draw
-from positioning.dartboard import Board
 
 FORMAT = '%(levelname).1s %(asctime)-15s %(message)s'
 
@@ -44,8 +43,8 @@ def main():
         devices = initialize_real_devices()
         configure_devices(devices)
     elif args.MODE == "mytest":
-        board = Board()
-        board.print()
+        motion = MotionDetectorContour()
+        motion.run()
     elif args.MODE == "mytest2":
         draw = Draw(900)
         img = draw.projection_prepare()

@@ -1,8 +1,17 @@
+import pickle
 import sqlite3
 
 """
 Repository class to persist the configuration of the individual devices
 """
+
+
+def pickle_config_for_device(device):
+    pass
+
+
+def find_pickle_for_device(device):
+    pass
 
 
 def create_config():

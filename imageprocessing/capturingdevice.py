@@ -62,6 +62,7 @@ class WebCamCapturingDevice(CapturingDevice):
         self.image_height = image_height
         self.device_number = device_number
         self.dartboard_level = dartboard_level
+        self.roi_level = dartboard_level - 150
         self.capture_device = get_capture_device(device_number, image_width, image_height)
         self.previous_frame = []
         self.recorded_frame = []
@@ -103,10 +104,10 @@ class WebCamCapturingDevice(CapturingDevice):
         else:
             return frame
 
-    def configure(self, initial_level=0):
+    def configure(self, initial_dartboard_level=0):
         dartboard_level = int(self.image_height / 3) * 2
-        if initial_level != 0:
-            dartboard_level = initial_level
+        if initial_dartboard_level != 0:
+            dartboard_level = initial_dartboard_level
 
         while True:
             # Capture frame-by-frame
@@ -116,6 +117,7 @@ class WebCamCapturingDevice(CapturingDevice):
             image = cv2.cvtColor(frame, 0)
 
             image = cv2.line(image, (0, dartboard_level), (self.image_width, dartboard_level), (0, 255, 0), 1)
+            image = cv2.line(image, (0, self.roi_level), (self.image_width, self.roi_level), (0, 0, 255), 1)
 
             # Center line for bull adjustment
             image = cv2.line(image, (int(self.image_width/2), 0), (int(self.image_width/2), int(self.image_height)),
@@ -129,8 +131,10 @@ class WebCamCapturingDevice(CapturingDevice):
             elif 'j' == chr(c & 255):
                 if dartboard_level < self.image_height - 1:
                     dartboard_level += 5
+                    self.roi_level += 5
             elif 'k' == chr(c & 255):
                 if dartboard_level > 0:
                     dartboard_level -= 5
+                    self.roi_level -= 5
 
         return dartboard_level

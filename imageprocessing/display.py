@@ -43,6 +43,13 @@ def display_with_information(processed_image):
                                     (processed_image.image_width, processed_image.darts_board_offset),
                                     (255, 0, 0),
                                     5)
+
+        # draw roi level
+        image_to_display = cv2.line(image_to_display,
+                                    (0, processed_image.darts_board_offset - 150),
+                                    (processed_image.image_width, processed_image.darts_board_offset - 150),
+                                    (0, 0, 255),
+                                    5)
         # draw bounding box
         image_to_display = cv2.rectangle(image_to_display, (x, y), (x + w, y + h), (0, 255, 0), 1)
 
