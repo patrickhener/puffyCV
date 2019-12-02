@@ -5,17 +5,30 @@ import math
 pi = 3.14159
 
 
-class Draw(object):
+def draw_line(img, point1, point2, color, thickness):
+    img = cv2.line(img, point1, point2, color, thickness)
+    return img
+
+
+def draw_rectangle(img, top_left, bottom_right, color, thickness):
+    img = cv2.rectangle(img, top_left, bottom_right, color, thickness)
+    return img
+
+
+class Board(object):
     """
     Class to draw dartboard and projections of recognised throws
     """
-    def __init__(self, frame_size):
+    def __init__(self, frame_size, img=None):
         """
         :param frame_size: Size of the frame drawn for dartboard projection
         :type frame_size: int
         """
         self.frame_size = frame_size
-        self.img = np.zeros((self.frame_size, self.frame_size, 3), np.uint8)
+        if img:
+            self.img = img
+        else:
+            self.img = np.zeros((self.frame_size, self.frame_size, 3), np.uint8)
         self.projection_center_point = (int(self.frame_size / 2), int(self.frame_size/2))
         self.text_font = cv2.FONT_HERSHEY_SIMPLEX
         self.line_type = cv2.LINE_AA

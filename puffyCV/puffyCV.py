@@ -10,7 +10,7 @@ from puffyCV.args import args
 from puffyCV.logging import log
 
 from services.calib_service import calibrate
-from services.draw_service import Draw
+from services.draw_service import Board
 
 FORMAT = '%(levelname).1s %(asctime)-15s %(message)s'
 
@@ -42,7 +42,7 @@ def main():
     elif args.MODE == "mytest":
         pass
     elif args.MODE == "mytest2":
-        draw = Draw(900)
+        draw = Board(900)
         while True:
             cv2.imshow("test", draw.projection_prepare())
             c = cv2.waitKey(1)

@@ -1,5 +1,5 @@
 import cv2
-from services.draw_service import Draw
+from services.draw_service import draw_rectangle, draw_line
 
 
 roi_rectangle_color = (0, 255, 0)  # green
@@ -31,21 +31,20 @@ class CamService(object):
         self.video_capture.release()
 
     def draw_setup_lines(self, roi_pos_y, roi_height, surface_y, surface_center):
-        draw = Draw(900)
         ret, origin_frame = self.video_capture.read()
         lined_frame = origin_frame
 
         # Draw ROI rectangle
         top_left = (0, roi_pos_y - roi_height)
         bottom_right = (self.resolution_width, roi_pos_y)
-        lined_frame = draw.draw_rectangle(top_left, bottom_right, roi_rectangle_color, roi_rectanlge_thickness)
+        lined_frame = draw_rectangle(lined_frame, top_left, bottom_right, roi_rectangle_color, roi_rectanlge_thickness)
         # Draw surface line
         line_x = (0, surface_y)
         line_y = (self.resolution_width, surface_y)
-        lined_frame = draw.draw_line(line_x, line_y, surface_line_color, surface_line_thickness)
+        lined_frame = draw_line(lined_frame, line_x, line_y, surface_line_color, surface_line_thickness)
         # Draw Bull orientation line
         center_line_1 = (surface_center, surface_y)
         center_line_2 = (center_line_1[0], surface_y - 50)
-        lined_frame = draw.draw_line(center_line_1, center_line_2, surface_line_color, surface_line_thickness)
+        lined_frame = draw_line(lined_frame, center_line_1, center_line_2, surface_line_color, surface_line_thickness)
 
         return lined_frame
