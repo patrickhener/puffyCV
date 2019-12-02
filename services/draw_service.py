@@ -2,6 +2,9 @@ import cv2
 import numpy as np
 import math
 
+from services.logging_service import initialize_logging
+
+log = initialize_logging()
 pi = 3.14159
 
 

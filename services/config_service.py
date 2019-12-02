@@ -1,6 +1,10 @@
 import pickle
 import os
 
+from services.logging_service import initialize_logging
+
+log = initialize_logging()
+
 path = os.getcwd()
 savepath = os.path.join(path + "/pickles/")
 

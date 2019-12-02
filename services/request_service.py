@@ -1,4 +1,7 @@
 import urllib.request
+from services.logging_service import initialize_logging
+
+log = initialize_logging()
 
 
 class ScoreboardConnector(object):

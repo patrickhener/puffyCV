@@ -1,20 +1,11 @@
-import logging
 import sys
 import cv2
 from puffyCV.args import args
 from services.config_service import initialize_config, get_config, set_config
 from services.cam_service import CamService
+from services.logging_service import initialize_logging
 
-FORMAT = '%(levelname).1s %(asctime)-15s %(message)s'
-
-logging.basicConfig(
-    stream=sys.stdout,
-    level=logging.DEBUG if args.DEBUG else logging.INFO,
-    format=FORMAT,
-    datefmt="%Y-%m-%d %H:%M:%S",
-)
-
-log = logging.getLogger(__name__)
+log = initialize_logging()
 
 
 def nothing(x):

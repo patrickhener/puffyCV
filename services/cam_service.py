@@ -1,5 +1,8 @@
 import cv2
 from services.draw_service import draw_rectangle, draw_line
+from services.logging_service import initialize_logging
+
+log = initialize_logging()
 
 
 roi_rectangle_color = (0, 255, 0)  # green
