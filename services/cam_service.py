@@ -1,7 +1,5 @@
 import cv2
-from puffyCV.args import args
 from services.draw_service import draw_rectangle, draw_line
-from services.config_service import get_config, set_config
 
 
 roi_rectangle_color = (0, 255, 0)  # green
