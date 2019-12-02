@@ -1,6 +1,4 @@
-import sys
 import cv2
-from puffyCV.args import args
 from services.config_service import initialize_config, get_config, set_config
 from services.cam_service import CamService
 from services.logging_service import initialize_logging
@@ -20,14 +18,15 @@ def calibrate(device_id):
     """
     log.info("Initializing device")
     if not initialize_config(device_id):
-        log.info("No config found, creating dummy one")
+        log.info("No config found for device {}, creating dummy one".format(device_id))
         cam = CamService(device_id, 500, 20, 600, 640)
     else:
-        log.info("Config found, loading")
+        log.info("Config found for device {}, loading".format(device_id))
         cam_load = get_config(device_id)
         cam = CamService(cam_load.get("device_id"), cam_load.get("roi_pos_y"), cam_load.get("roi_height"),
                          cam_load.get("surface_y"), cam_load.get("surface_center"))
 
+    log.info("To end calibration hit q")
     roi_pos_y = cam.roi_pos_y
     roi_height = cam.roi_height
     surface_y = cam.surface_y
@@ -48,7 +47,7 @@ def calibrate(device_id):
         surface_center = cv2.getTrackbarPos("surface_center", "calibrate")
         c = cv2.waitKey(1)
         if 'q' == chr(c & 255):
-            log.info("key q pressed, saving config")
+            log.info("key q pressed, saving config for device {}".format(device_id))
             set_config(device_id, roi_pos_y, roi_height, surface_y, surface_center)
             log.info("config saved successful")
             break

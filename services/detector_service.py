@@ -1,3 +1,8 @@
+from services.logging_service import initialize_logging
+
+log = initialize_logging()
+
+
 def has_new_images(device_list):
     """
     Checks all devices for new images. If all devices have new images, it returns true.

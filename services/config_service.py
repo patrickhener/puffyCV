@@ -1,5 +1,6 @@
 import pickle
 import os
+import sys
 
 from services.logging_service import initialize_logging
 
@@ -10,6 +11,9 @@ savepath = os.path.join(path + "/pickles/")
 
 
 def get_config(device_id):
+    if not initialize_config(device_id):
+        log.error("Camera {} is not yet calibrated. Please do this first. Exiting ...".format(device_id))
+        sys.exit()
     filename = "device-" + str(device_id)
     infile = os.path.join(savepath + filename)
     with open(infile, "rb") as pickle_file:

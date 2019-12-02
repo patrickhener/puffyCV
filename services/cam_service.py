@@ -1,4 +1,5 @@
 import cv2
+import numpy as np
 from services.draw_service import draw_rectangle, draw_line
 from services.logging_service import initialize_logging
 
@@ -9,6 +10,10 @@ roi_rectangle_color = (0, 255, 0)  # green
 roi_rectanlge_thickness = 3
 surface_line_color = (0, 0, 255)  # red
 surface_line_thickness = 3
+
+# Threshold for the image difference of two frames. Value between 0 and 255. 0 means that there needs to be no
+# difference between two successive frames (which is obviously a bad idea), 255 is the biggest possible difference.
+IMAGE_DIFFERENCE_THRESHOLD = 50
 
 
 class CamService(object):
@@ -25,16 +30,50 @@ class CamService(object):
         self.roi_height = roi_height
         self.surface_y = surface_y
         self.surface_center = surface_center
+        self.previous_frame = []
+        self.recorded_frame = []
 
-        self.video_capture = cv2.VideoCapture(self.device_id)
-        self.video_capture.set(cv2.CAP_PROP_FRAME_WIDTH, self.resolution_width)
-        self.video_capture.set(cv2.CAP_PROP_FRAME_HEIGHT, self.resolution_height)
+        self.capture_device = cv2.VideoCapture(self.device_id)
+        self.capture_device.set(cv2.CAP_PROP_FRAME_WIDTH, self.resolution_width)
+        self.capture_device.set(cv2.CAP_PROP_FRAME_HEIGHT, self.resolution_height)
 
     def release(self):
-        self.video_capture.release()
+        self.capture_device.release()
+
+    def return_capture_device(self):
+        return self.capture_device
+
+    def has_new_frame(self):
+        return self.recorded_frame != []
+
+    def fetch_latest_frame(self):
+        recent_frame = self.recorded_frame
+        self.recorded_frame = []
+        return recent_frame
+
+    def process_image(self):
+        _, frame = self.capture_device.read()
+        diff = self.get_difference(frame)
+
+        white_pixels = np.sum(diff > IMAGE_DIFFERENCE_THRESHOLD)
+
+        sixty_percent_of_all_pixels = (self.resolution_width * self.resolution_height) * 0.6
+        minimum_changed_pixels_threshold = (self.resolution_width * self.resolution_height) * 0.015
+
+        if minimum_changed_pixels_threshold < white_pixels < sixty_percent_of_all_pixels:
+            self.recorded_frame = diff
+
+        self.previous_frame = frame
+
+    def get_difference(self, frame):
+        has_previous_frame = len(self.previous_frame) > 0
+        if has_previous_frame:
+            return cv2.subtract(self.previous_frame, frame)
+        else:
+            return frame
 
     def draw_setup_lines(self, roi_pos_y, roi_height, surface_y, surface_center):
-        ret, origin_frame = self.video_capture.read()
+        ret, origin_frame = self.capture_device.read()
         lined_frame = origin_frame
 
         # Draw ROI rectangle

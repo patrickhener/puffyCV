@@ -1,5 +1,9 @@
 import cv2
 
+from services.logging_service import initialize_logging
+
+log = initialize_logging()
+
 
 def display_with_information(processed_image):
     """
@@ -56,4 +60,3 @@ def display_with_information(processed_image):
         # show image
         cv2.imshow('device_' + str(processed_image.device_number), image_to_display)
         cv2.waitKey(1)
-
