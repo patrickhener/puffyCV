@@ -1,6 +1,5 @@
 import pickle
 import os
-from services.cam_service import CamService
 
 path = os.getcwd()
 savepath = os.path.join(path + "/pickles/")
@@ -30,7 +29,9 @@ def set_config(device_id, roi_pos_y, roi_height, surface_y, surface_center):
 
 def initialize_config(device_id):
     filename = "device-" + str(device_id)
-    if not os.path.isfile('./pickles/' + filename):
+    if not os.path.exists(savepath):
+        os.mkdir(savepath)
+    if not os.path.isfile(os.path.join(savepath + filename)):
         return False
     else:
         return True

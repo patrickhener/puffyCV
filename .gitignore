@@ -2,6 +2,7 @@
 .idea/
 .venv/
 .vscode
+pickles/
 __pychache__
 /docs/_build
 /docs/_static
