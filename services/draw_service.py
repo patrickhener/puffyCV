@@ -5,16 +5,6 @@ import math
 pi = 3.14159
 
 
-def draw_line(img, point1, point2, color, thickness):
-    img = cv2.line(img, point1, point2, color, thickness)
-    return img
-
-
-def draw_rectangle(img, top_left, bottom_right, color, thickness):
-    img = cv2.rectangle(img, top_left, bottom_right, color, thickness)
-    return img
-
-
 class Draw(object):
     """
     Class to draw dartboard and projections of recognised throws
@@ -34,6 +24,11 @@ class Draw(object):
         self.text_scale = 1
         self.projection_coefficient = 2
 
+    def draw_line(self, point1, point2, color, thickness):
+        self.img = cv2.line(self.img, point1, point2, color, thickness)
+
+    def draw_rectangle(self, top_left, bottom_right, color, thickness):
+        self.img = cv2.rectangle(self.img, top_left, bottom_right, color, thickness)
 
     def draw_circle(self, center_coord, radius, color, thickness):
         self.img = cv2.circle(self.img, center_coord, radius, color, thickness)
@@ -65,11 +60,11 @@ class Draw(object):
         for i in range(0, 360, 9):
             segment_point1 = (
                     round(
-                        self.projection_center_point[0] + math.cos(pi/10 * i - pi/20) * self.projection_coefficient * 170
-                    ),
+                        self.projection_center_point[0] + math.cos(pi/10 * i - pi/20) * self.projection_coefficient *
+                        170),
                     round(
-                        self.projection_center_point[1] + math.sin(pi/10 * i - pi/20) * self.projection_coefficient * 170
-                    )
+                        self.projection_center_point[1] + math.sin(pi/10 * i - pi/20) * self.projection_coefficient *
+                        170)
             )
             segment_point2 = (
                 round(

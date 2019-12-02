@@ -48,14 +48,6 @@ parser.add_argument(
 )
 
 parser.add_argument(
-    '-cl',
-    '--calibration-data',
-    dest="CALD",
-    type=str,
-    help="path to existing calibration data"
-)
-
-parser.add_argument(
     '-v',
     '--version',
     action='version',
