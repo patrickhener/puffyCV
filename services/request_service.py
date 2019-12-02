@@ -1,5 +1,6 @@
 import urllib.request
 
+
 class ScoreboardConnector(object):
     """
     Object to connect to a Scoreboard Application like
