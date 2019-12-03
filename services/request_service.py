@@ -17,10 +17,13 @@ class ScoreboardConnector(object):
 
     def send_throw(self, segment, mod):
         url = "http://" + self.dst_host + ":" + self.dst_port + "/game/throw/" + segment + "/" + mod
-        request = urllib.request.urlopen(url)
-        return request
+        with urllib.request.urlopen(url) as response:
+            log.info("Request {} sent".format(url))
+            log.info("HTTP Response Code is: {}".format(response.getcode()))
+        log.info("")
 
     def send_next(self):
         url = "http://" + self.dst_host + ":" + self.dst_port + "/game/nextPlayer"
-        request = urllib.request.urlopen(url)
-        return request
+        with urllib.request.urlopen(url) as response:
+            log.info("Request {} sent".format(url))
+            log.info("HTTP Response Code is: {}".format(response.getcode()))

@@ -1,10 +1,9 @@
-import cv2
+from cv2 import VideoCapture, CAP_PROP_FRAME_WIDTH, CAP_PROP_FRAME_HEIGHT
+from cv2.cv2 import subtract
 import numpy as np
+from threading import Thread
+
 from services.draw_service import draw_rectangle, draw_line
-from services.logging_service import initialize_logging
-
-log = initialize_logging()
-
 
 roi_rectangle_color = (0, 255, 0)  # green
 roi_rectanlge_thickness = 3
@@ -13,10 +12,23 @@ surface_line_thickness = 3
 
 # Threshold for the image difference of two frames. Value between 0 and 255. 0 means that there needs to be no
 # difference between two successive frames (which is obviously a bad idea), 255 is the biggest possible difference.
-IMAGE_DIFFERENCE_THRESHOLD = 50
+IMAGE_DIFFERENCE_THRESHOLD = 20
 
 
-class CamService(object):
+def get_capture_device(device_number, image_width, image_height):
+    capture_device = VideoCapture(device_number)
+    capture_device.set(CAP_PROP_FRAME_WIDTH, image_width)
+    capture_device.set(CAP_PROP_FRAME_HEIGHT, image_height)
+    return capture_device
+
+
+class CapturingDevice(object):
+    """
+    Capturing device superclass represents devices which capture visual input. These will be cameras in most cases.
+    """
+
+
+class WebCamCapturingDevice(CapturingDevice):
     """
 
     """
@@ -30,18 +42,12 @@ class CamService(object):
         self.roi_height = roi_height
         self.surface_y = surface_y
         self.surface_center = surface_center
+        self.capture_device = get_capture_device(device_id, resolution_width, resolution_height)
         self.previous_frame = []
         self.recorded_frame = []
 
-        self.capture_device = cv2.VideoCapture(self.device_id)
-        self.capture_device.set(cv2.CAP_PROP_FRAME_WIDTH, self.resolution_width)
-        self.capture_device.set(cv2.CAP_PROP_FRAME_HEIGHT, self.resolution_height)
-
     def release(self):
         self.capture_device.release()
-
-    def return_capture_device(self):
-        return self.capture_device
 
     def has_new_frame(self):
         return self.recorded_frame != []
@@ -68,7 +74,7 @@ class CamService(object):
     def get_difference(self, frame):
         has_previous_frame = len(self.previous_frame) > 0
         if has_previous_frame:
-            return cv2.subtract(self.previous_frame, frame)
+            return subtract(self.previous_frame, frame)
         else:
             return frame
 

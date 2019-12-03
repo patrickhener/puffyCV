@@ -1,10 +1,10 @@
 import time
-from time import sleep
-
-import cv2
+import asyncio
+from cv2.cv2 import destroyAllWindows
 
 from services.detector_service import has_new_images
-from services.processor_service import ProcessedImage, erode, segment, find_darts_axis
+from services.processor_service import erode, segment, find_darts_axis
+from services.data_service import ProcessedImage
 from services.display_service import display_with_information
 
 
@@ -37,14 +37,19 @@ class GameLoop:
 
     def run(self):
         """
-        runs the game loop
+        runs the game loop as asynchronous task
+        """
+        asyncio.run(self.async_run())
+
+    async def async_run(self):
+        """
+        asynchronous task
         """
         prev = 0
 
         while self.capturing:
             time_elapsed = time.time() - prev
-            # TODO find a way to free cpu time (non-blocking) and remove sleep
-            sleep(0.01)
+            await asyncio.sleep(0.1)
             if is_frame_at_frame_rate(self.frames_per_second, int(time_elapsed)):
                 prev = time.time()
                 self.process()
@@ -53,7 +58,7 @@ class GameLoop:
         for captured_input in self.devices:
             captured_input.release()
 
-        cv2.destroyAllWindows()
+        destroyAllWindows()
 
     def process(self):
         for device in self.devices:

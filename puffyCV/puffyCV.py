@@ -3,7 +3,8 @@
 
 import signal
 import sys
-import cv2
+
+from cv2 import imshow, waitKey
 
 from puffyCV.args import args
 from puffyCV.gameloop import GameLoop
@@ -11,7 +12,7 @@ from puffyCV.gameloop import GameLoop
 from services.logging_service import initialize_logging
 from services.calib_service import calibrate
 from services.draw_service import Board
-from services.cam_service import CamService
+from services.device_service import WebCamCapturingDevice
 from services.config_service import get_config
 
 log = initialize_logging()
@@ -37,21 +38,19 @@ def main():
         cams = []
         for device in args.DEVICE_IDS:
             cam_config = get_config(device)
-            cam_service = CamService(cam_config.get("device_id"), cam_config.get("roi_pos_y"),
-                                     cam_config.get("roi_height"), cam_config.get("surface_y"),
-                                     cam_config.get("surface_center"))
+            cam_service = WebCamCapturingDevice(cam_config.get("device_id"), cam_config.get("roi_pos_y"),
+                                                cam_config.get("roi_height"), cam_config.get("surface_y"),
+                                                cam_config.get("surface_center"))
             cams.append(cam_service)
 
         game_loop = GameLoop(cams)
         game_loop.run()
 
-        gameloop = GameLoop(cams)
-        gameloop.run()
     elif args.MODE == "mytest2":
         draw = Board(900)
         while True:
-            cv2.imshow("test", draw.projection_prepare())
-            c = cv2.waitKey(1)
+            imshow("test", draw.projection_prepare())
+            c = waitKey(1)
             if 'q' == chr(c & 255):
                 break
 
