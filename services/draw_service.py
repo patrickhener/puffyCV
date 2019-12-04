@@ -20,13 +20,16 @@ def draw_rectangle(img, top_left, bottom_right, color, thickness):
 
 
 def draw_banner():
-    banner =  "              ______     ______   __                          \n"
-    banner += "   ___  __ __/ _/ _/_ __/ ___/ | / /   by Patrick Hener       \n"
-    banner += "  / _ \/ // / _/ _/ // / /__ | |/ /    patrickhener@gmx.de    \n"
-    banner += " / .__/\_,_/_//_/ \_, /\___/ |___/     Version: {}, 2019-2020 \n".format(__version__)
-    banner += "/_/              /___/                 http://puffycv.rtfd.io/\n"
+    banner =  "\n"
+    banner += "██████╗ ██╗   ██╗███████╗███████╗██╗   ██╗ ██████╗██╗   ██╗\n"
+    banner += "██╔══██╗██║   ██║██╔════╝██╔════╝╚██╗ ██╔╝██╔════╝██║   ██║   by Patrick Hener\n"
+    banner += "██████╔╝██║   ██║█████╗  █████╗   ╚████╔╝ ██║     ██║   ██║   patrickhener@gmx.de\n"
+    banner += "██╔═══╝ ██║   ██║██╔══╝  ██╔══╝    ╚██╔╝  ██║     ╚██╗ ██╔╝   Version: {}, 2019-2020\n".format(__version__)
+    banner += "██║     ╚██████╔╝██║     ██║        ██║   ╚██████╗ ╚████╔╝    http://puffycv.rtfd.io/\n"
+    banner += "╚═╝      ╚═════╝ ╚═╝     ╚═╝        ╚═╝    ╚═════╝  ╚═══╝\n"
     banner += "\n"
     return banner
+
 
 
 class Board(object):
