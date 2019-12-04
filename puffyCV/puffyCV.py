@@ -8,7 +8,7 @@ from puffyCV.args import args
 
 from services.logging_service import initialize_logging
 from services.calib_service import calibrate
-from services.draw_service import Board
+from services.draw_service import Board, draw_banner
 from services.device_service import WebCamCapturingDevice
 from services.config_service import get_config
 from services.game_service import GameLoop
@@ -23,6 +23,8 @@ def signal_handler(sig, frame):
 
 def main():
     signal.signal(signal.SIGINT, signal_handler)
+    if not args.OBANNER:
+        print(draw_banner())
     if args.MODE == "run":
         log.info("puffyCV recognition started")
     elif args.MODE == "cal":
@@ -51,6 +53,10 @@ def main():
             c = cv2.waitKey(1)
             if 'q' == chr(c & 255):
                 break
+
+    elif args.MODE == "bannertest":
+        print(draw_banner())
+
 
     else:
         log.error("Invalid mode selected. Please refer to README. Exiting ...")

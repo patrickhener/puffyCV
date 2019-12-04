@@ -48,6 +48,15 @@ parser.add_argument(
 )
 
 parser.add_argument(
+    '-ob',
+    '--omit-banner',
+    dest="OBANNER",
+    default=False,
+    action="store_true",
+    help="Omit print of puffyCV Banner"
+)
+
+parser.add_argument(
     '-v',
     '--version',
     action='version',

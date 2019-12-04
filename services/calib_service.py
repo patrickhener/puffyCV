@@ -1,4 +1,4 @@
-from cv2 import namedWindow, createTrackbar, imshow, getTrackbarPos, waitKey
+import cv2
 from services.config_service import initialize_config, get_config, set_config
 from services.device_service import WebCamCapturingDevice
 from services.logging_service import initialize_logging
@@ -32,20 +32,20 @@ def calibrate(device_id):
     surface_y = cam.surface_y
     surface_center = cam.surface_center
 
-    namedWindow("calibrate")
-    createTrackbar("roi_pos_y", "calibrate", roi_pos_y, 720, nothing)
-    createTrackbar("roi_height", "calibrate", roi_height, 200, nothing)
-    createTrackbar("surface_y", "calibrate", surface_y, 720, nothing)
-    createTrackbar("surface_center", "calibrate", surface_center, 1280, nothing)
+    cv2.namedWindow("calibrate")
+    cv2.createTrackbar("roi_pos_y", "calibrate", roi_pos_y, 720, nothing)
+    cv2.createTrackbar("roi_height", "calibrate", roi_height, 200, nothing)
+    cv2.createTrackbar("surface_y", "calibrate", surface_y, 720, nothing)
+    cv2.createTrackbar("surface_center", "calibrate", surface_center, 1280, nothing)
 
     while True:
         img = cam.draw_setup_lines(roi_pos_y, roi_height, surface_y, surface_center)
-        imshow("calibrate", img)
-        roi_pos_y = getTrackbarPos("roi_pos_y", "calibrate")
-        roi_height = getTrackbarPos("roi_height", "calibrate")
-        surface_y = getTrackbarPos("surface_y", "calibrate")
-        surface_center = getTrackbarPos("surface_center", "calibrate")
-        c = waitKey(1)
+        cv2.imshow("calibrate", img)
+        roi_pos_y = cv2.getTrackbarPos("roi_pos_y", "calibrate")
+        roi_height = cv2.getTrackbarPos("roi_height", "calibrate")
+        surface_y = cv2.getTrackbarPos("surface_y", "calibrate")
+        surface_center = cv2.getTrackbarPos("surface_center", "calibrate")
+        c = cv2.waitKey(1)
         if 'q' == chr(c & 255):
             log.info("key q pressed, saving config for device {}".format(device_id))
             set_config(device_id, roi_pos_y, roi_height, surface_y, surface_center)
