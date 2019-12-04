@@ -41,8 +41,7 @@ class GameLoop:
         asynchronous task
         """
 
-        while self.capturing:
-            self.process()
+        while self.capturing: self.process()
 
         # When everything done, release the capture devices
         for captured_input in self.devices:
@@ -64,6 +63,7 @@ class GameLoop:
                                                      device.resolution_height,
                                                      device.device_id)
                     # set the dart board level obtained from the device
-                    processed_image.set_darts_board_offset(device.surface_y)
+                    processed_image.set_darts_board_offset(device.surface_y, device.surface_center)
+                    processed_image.set_roi_offset(device.roi_pos_y, device.roi_height)
                     # do image processing
                     process_input(processed_image)

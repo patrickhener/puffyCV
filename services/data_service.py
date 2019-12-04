@@ -9,6 +9,9 @@ class ProcessedImage(object):
         self.image_height = image_height
         self.device_number = device_number
         self.darts_board_offset = 0
+        self.darts_board_center = 0
+        self.roi_offset = 0
+        self.roi_height = 0
         self.bounding_box = None
         self.darts_axis = None
 
@@ -18,8 +21,13 @@ class ProcessedImage(object):
     def set_darts_axis(self, darts_axis):
         self.darts_axis = darts_axis
 
-    def set_darts_board_offset(self, darts_board_offset):
+    def set_darts_board_offset(self, darts_board_offset, darts_board_center):
         self.darts_board_offset = darts_board_offset
+        self.darts_board_center = darts_board_center
+
+    def set_roi_offset(self, roi_offset, roi_height):
+        self.roi_offset = roi_offset
+        self.roi_height = roi_height
 
     def has_bounding_box(self):
         return self.bounding_box is not None
