@@ -1,7 +1,7 @@
 import numpy as np
 import math
+import cv2
 
-from cv2 import line as cv2line, rectangle, FONT_HERSHEY_SIMPLEX, LINE_AA, circle, putText
 from services.logging_service import initialize_logging
 
 log = initialize_logging()
@@ -9,12 +9,12 @@ pi = 3.14159
 
 
 def draw_line(img, point1, point2, color, thickness):
-    img = cv2line(img, point1, point2, color, thickness)
+    img = cv2.line(img, point1, point2, color, thickness)
     return img
 
 
 def draw_rectangle(img, top_left, bottom_right, color, thickness):
-    img = rectangle(img, top_left, bottom_right, color, thickness)
+    img = cv2.rectangle(img, top_left, bottom_right, color, thickness)
     return img
 
 
@@ -33,31 +33,31 @@ class Board(object):
         else:
             self.img = np.zeros((self.frame_size, self.frame_size, 3), np.uint8)
         self.projection_center_point = (int(self.frame_size / 2), int(self.frame_size/2))
-        self.text_font = FONT_HERSHEY_SIMPLEX
-        self.line_type = LINE_AA
+        self.text_font = cv2.FONT_HERSHEY_SIMPLEX
+        self.line_type = cv2.LINE_AA
         self.text_color = (255, 255, 255)
         self.line_color = (255, 255, 255)
         self.text_scale = 1
         self.projection_coefficient = 2
 
     def draw_line(self, point1, point2, color, thickness):
-        self.img = cv2line(self.img, point1, point2, color, thickness)
+        self.img = cv2.line(self.img, point1, point2, color, thickness)
 
     def draw_rectangle(self, top_left, bottom_right, color, thickness):
-        self.img = rectangle(self.img, top_left, bottom_right, color, thickness)
+        self.img = cv2.rectangle(self.img, top_left, bottom_right, color, thickness)
 
     def draw_circle(self, center_coord, radius, color, thickness):
-        self.img = circle(self.img, center_coord, radius, color, thickness)
+        self.img = cv2.circle(self.img, center_coord, radius, color, thickness)
 
     def draw_string(self, string, text_coords):
-        self.img = putText(self.img, string, text_coords, self.text_font, self.text_scale, self.text_color, 2,
+        self.img = cv2.putText(self.img, string, text_coords, self.text_font, self.text_scale, self.text_color, 2,
                                self.line_type)
 
     def projection_draw_throw(self, poi_coord):
-        self.img = circle(self.img, poi_coord, 1, (255, 0, 0), 1)
+        self.img = cv2.circle(self.img, poi_coord, 1, (255, 0, 0), 1)
 
     def projection_draw_line(self, point1, point2, color, thickness):
-        self.img = cv2line(self.img, point1, point2, color, thickness)
+        self.img = cv2.line(self.img, point1, point2, color, thickness)
 
     def projection_prepare(self):
         """

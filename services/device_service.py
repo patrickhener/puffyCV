@@ -1,5 +1,4 @@
-from cv2 import VideoCapture, CAP_PROP_FRAME_WIDTH, CAP_PROP_FRAME_HEIGHT
-from cv2.cv2 import subtract
+import cv2
 import numpy as np
 from threading import Thread
 
@@ -16,9 +15,9 @@ IMAGE_DIFFERENCE_THRESHOLD = 20
 
 
 def get_capture_device(device_number, image_width, image_height):
-    capture_device = VideoCapture(device_number)
-    capture_device.set(CAP_PROP_FRAME_WIDTH, image_width)
-    capture_device.set(CAP_PROP_FRAME_HEIGHT, image_height)
+    capture_device = cv2.VideoCapture(device_number)
+    capture_device.set(cv2.CAP_PROP_FRAME_WIDTH, image_width)
+    capture_device.set(cv2.CAP_PROP_FRAME_HEIGHT, image_height)
     return capture_device
 
 
@@ -74,7 +73,7 @@ class WebCamCapturingDevice(CapturingDevice):
     def get_difference(self, frame):
         has_previous_frame = len(self.previous_frame) > 0
         if has_previous_frame:
-            return subtract(self.previous_frame, frame)
+            return cv2.subtract(self.previous_frame, frame)
         else:
             return frame
 

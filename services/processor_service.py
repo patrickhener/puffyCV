@@ -1,7 +1,6 @@
 import numpy as np
+import cv2
 from skimage.measure import LineModelND
-from cv2 import erode as cv2erode, threshold, cvtColor, getStructuringElement, morphologyEx, findContours, \
-    boundingRect, contourArea, THRESH_BINARY, COLOR_BGR2GRAY, MORPH_RECT, MORPH_CLOSE, RETR_TREE, CHAIN_APPROX_SIMPLE
 from services.data_service import ProcessedImage, BoundingBox
 
 
@@ -14,8 +13,8 @@ def erode(image):
     """
     # Taking a matrix of size 5 as the kernel
     kernel = np.ones((4, 4), np.uint8)
-    img_erosion = cv2erode(image.image, kernel, iterations=1)
-    _, eroded_image = threshold(img_erosion, 30, 255, THRESH_BINARY)
+    img_erosion = cv2.erode(image.image, kernel, iterations=1)
+    _, eroded_image = cv2.threshold(img_erosion, 30, 255, cv2.THRESH_BINARY)
     return eroded_image
 
 
@@ -29,21 +28,21 @@ def segment(processed_image):
     :rtype: BoundingBox
     """
     # Get binary image by applying a threshold
-    image = cvtColor(processed_image.image, COLOR_BGR2GRAY)
-    _, binary = threshold(image, 30, 255, THRESH_BINARY)
+    image = cv2.cvtColor(processed_image.image, cv2.COLOR_BGR2GRAY)
+    _, binary = cv2.threshold(image, 30, 255, cv2.THRESH_BINARY)
 
     # applying morphological operation to join detached segments
-    rect_kernel = getStructuringElement(MORPH_RECT, (30, 30))
-    threshed = morphologyEx(binary, MORPH_CLOSE, rect_kernel)
+    rect_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (30, 30))
+    threshed = cv2.morphologyEx(binary, cv2.MORPH_CLOSE, rect_kernel)
 
     # Find contours
-    contours, hierarchy = findContours(threshed, RETR_TREE, CHAIN_APPROX_SIMPLE)
+    contours, hierarchy = cv2.findContours(threshed, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     if len(contours) <= 0:
         return BoundingBox(0, 0, 0, 0)
 
     best_contour = find_best_contour(contours)
 
-    x, y, w, h = boundingRect(best_contour)
+    x, y, w, h = cv2.boundingRect(best_contour)
     if y+h < processed_image.darts_board_offset:
         h = processed_image.darts_board_offset - y
     return BoundingBox(x, y, w, h)
@@ -52,11 +51,11 @@ def segment(processed_image):
 def find_best_contour(contours):
     # find the contour with the biggest area
     best_contour = contours[0]
-    best_area = contourArea(best_contour)
+    best_area = cv2.contourArea(best_contour)
     for cnt in contours:
-        if contourArea(cnt) > best_area:
+        if cv2.contourArea(cnt) > best_area:
             best_contour = cnt
-            best_area = contourArea(cnt)
+            best_area = cv2.contourArea(cnt)
     return best_contour
 
 

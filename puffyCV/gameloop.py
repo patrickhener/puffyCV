@@ -1,15 +1,11 @@
 import time
 import asyncio
-from cv2.cv2 import destroyAllWindows
+import cv2
 
 from services.detector_service import has_new_images
 from services.processor_service import erode, segment, find_darts_axis
 from services.data_service import ProcessedImage
 from services.display_service import display_with_information
-
-
-def is_frame_at_frame_rate(frame_rate: int, time_elapsed: int) -> object:
-    return time_elapsed > 1. / frame_rate
 
 
 def process_input(processed_image):
@@ -33,7 +29,6 @@ class GameLoop:
         """
         self.devices = devices
         self.capturing = True
-        self.frames_per_second = 10
 
     def run(self):
         """
@@ -45,20 +40,15 @@ class GameLoop:
         """
         asynchronous task
         """
-        prev = 0
 
         while self.capturing:
-            time_elapsed = time.time() - prev
-            await asyncio.sleep(0.1)
-            if is_frame_at_frame_rate(self.frames_per_second, int(time_elapsed)):
-                prev = time.time()
-                self.process()
+            self.process()
 
         # When everything done, release the capture devices
         for captured_input in self.devices:
             captured_input.release()
 
-        destroyAllWindows()
+        cv2.destroyAllWindows()
 
     def process(self):
         for device in self.devices:
@@ -67,7 +57,7 @@ class GameLoop:
         if has_new_images(self.devices):
             for device in self.devices:
                 latest_frame = device.fetch_latest_frame()
-                if latest_frame != []:
+                if not latest_frame.all():
                     # set image and image metadata
                     processed_image = ProcessedImage(latest_frame,
                                                      device.resolution_width,

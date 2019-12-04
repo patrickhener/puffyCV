@@ -1,4 +1,4 @@
-from cv2 import line as cv2line, rectangle, imshow, waitKey
+import cv2
 
 
 def display_with_information(processed_image):
@@ -24,31 +24,31 @@ def display_with_information(processed_image):
             # intersection dart with dart board
             x_value = int(x + processed_image.darts_axis[len(processed_image.darts_axis) - 1])
 
-            image_to_display = cv2line(image_to_display, (int(x + line[0]), y),
+            image_to_display = cv2.line(image_to_display, (int(x + line[0]), y),
                                         (x_value, processed_image.darts_board_offset), (0, 255, 0), 3)
 
-            image_to_display = cv2line(image_to_display,
+            image_to_display = cv2.line(image_to_display,
                                         (x_value, processed_image.darts_board_offset + 70),
                                         (x_value, processed_image.darts_board_offset - 20),
                                         (0, 0, 255), 1)
-            image_to_display = cv2line(image_to_display,
+            image_to_display = cv2.line(image_to_display,
                                         (x_value, processed_image.darts_board_offset + 30),
                                         (x_value, processed_image.darts_board_offset + 70),
                                         (0, 0, 255), 10)
         # draw dart board level
-        image_to_display = cv2line(image_to_display,
+        image_to_display = cv2.line(image_to_display,
                                     (0, processed_image.darts_board_offset),
                                     (processed_image.image_width, processed_image.darts_board_offset),
                                     (255, 0, 0), 5)
 
         # draw roi level
-        image_to_display = cv2line(image_to_display,
+        image_to_display = cv2.line(image_to_display,
                                     (0, processed_image.darts_board_offset - 150),
                                     (processed_image.image_width, processed_image.darts_board_offset - 150),
                                     (0, 0, 255), 5)
         # draw bounding box
-        image_to_display = rectangle(image_to_display, (x, y), (x + w, y + h), (0, 255, 0), 1)
+        image_to_display = cv2.rectangle(image_to_display, (x, y), (x + w, y + h), (0, 255, 0), 1)
 
         # show image
-        imshow('device_' + str(processed_image.device_number), image_to_display)
-        waitKey(1)
+        cv2.imshow('device_' + str(processed_image.device_number), image_to_display)
+        cv2.waitKey(1)
