@@ -1,17 +1,5 @@
-# puffyCV
-Dart score recognition using openCV (This is a rewrite and progression of what Niels Lüdemann did with [cvDarts](https://github.com/nluede/cvdarts))
-
-## Installation
-TODO
-
-## Calibration
-TODO
-
-## Running the application
-TODO
-
 # Introduction
-This project is a darts recognition software to provide an automated steel darts machine using openCV and several webcams.
+Dart score recognition using openCV (This is a rewrite and progression of what Niels Lüdemann did with [cvDarts](https://github.com/nluede/cvdarts))
 
 # Documentation
 For documentation refer to:  
