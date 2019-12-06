@@ -91,13 +91,18 @@ def display_with_information(processed_image):
         image_to_display = draw_rectangle(image_to_display, (x, y), (x + w, y + h), bounding_box_color,
                                           bounding_box_thickness)
 
-        # Board projection
-        board = Board(900)
-
-        # show image
+        # show images
         cv2.imshow('device_' + str(processed_image.device_number), image_to_display)
-        cv2.imshow('projection', board.projection_prepare())
         c = cv2.waitKey(1)
         if 'q' == chr(c & 255):
             log.info("Caught pressing 'q', exiting ...")
             sys.exit()
+
+
+def display_board(image):
+    # show images
+    cv2.imshow('prjection', image)
+    c = cv2.waitKey(1)
+    if 'q' == chr(c & 255):
+        log.info("Caught pressing 'q', exiting ...")
+        sys.exit()
