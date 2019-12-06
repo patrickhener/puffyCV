@@ -1,5 +1,6 @@
 import cv2
 from services.draw_service import draw_line, draw_rectangle
+from puffyCV.args import args
 
 dart_axis_color = (0, 255, 0)
 dart_axis_thickness = 3
@@ -12,6 +13,10 @@ dartboard_level_color = (255, 0, 0)
 dartboard_level_thickness = 5
 roi_color = (0, 255, 255)
 roi_thickness = 5
+line_type = cv2.LINE_AA
+text_type = cv2.FONT_HERSHEY_SIMPLEX
+text_thickness = 1
+text_color = (255, 255, 255)
 
 
 def display_with_information(processed_image):
@@ -52,6 +57,22 @@ def display_with_information(processed_image):
             image_to_display = draw_line(image_to_display, (x_value, processed_image.darts_board_offset + 30),
                                          (x_value, processed_image.darts_board_offset + 70),pointer_color,
                                          pin_thickness)
+
+            # If debug put some text to the image as well
+            if args.DEBUG:
+                intersection = "intersection at: {}".format(x_value)
+                dart_board_center = "dartboard center at: {}".format(processed_image.darts_board_center)
+                distance = processed_image.darts_board_center - x_value
+                if distance < 0:
+                    distance = distance * -1
+                pixel_distance = "pixeldistance (intersection - center): {}".format(distance)
+                cv2.putText(image_to_display, intersection, (50, 50), text_type, text_thickness, text_color,
+                            lineType=line_type)
+                cv2.putText(image_to_display, dart_board_center, (50, 80), text_type, text_thickness, text_color,
+                            lineType=line_type)
+                cv2.putText(image_to_display, pixel_distance, (50, 110), text_type, text_thickness, text_color,
+                            lineType=line_type)
+
         # draw dart board level
         image_to_display = draw_line(image_to_display, dartboard_level_x, dartboard_level_y, dartboard_level_color,
                                      dartboard_level_thickness)
