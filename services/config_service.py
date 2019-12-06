@@ -22,12 +22,13 @@ def get_config(device_id):
     return cam
 
 
-def set_config(device_id, roi_pos_y, roi_height, surface_y, surface_center):
+def set_config(device_id, roi_pos_y, roi_height, surface_y, surface_center, threshold):
     cam = {"device_id": device_id,
            "roi_pos_y": roi_pos_y,
            "roi_height": roi_height,
            "surface_y": surface_y,
-           "surface_center": surface_center
+           "surface_center": surface_center,
+           "threshold": threshold
            }
     filename = "device-" + str(device_id)
     outfile = open(os.path.join(savepath + filename), 'wb')

@@ -32,7 +32,7 @@ class WebCamCapturingDevice(CapturingDevice):
 
     """
 
-    def __init__(self, device_id, roi_pos_y, roi_height, surface_y, surface_center,
+    def __init__(self, device_id, roi_pos_y, roi_height, surface_y, surface_center, threshold,
                  resolution_width=1280, resolution_height=720):
         self.device_id = device_id
         self.resolution_width = resolution_width
@@ -41,6 +41,7 @@ class WebCamCapturingDevice(CapturingDevice):
         self.roi_height = roi_height
         self.surface_y = surface_y
         self.surface_center = surface_center
+        self.threshold = threshold
         self.capture_device = get_capture_device(device_id, resolution_width, resolution_height)
         self.previous_frame = []
         self.recorded_frame = []
@@ -95,3 +96,9 @@ class WebCamCapturingDevice(CapturingDevice):
         lined_frame = draw_line(lined_frame, center_line_1, center_line_2, surface_line_color, surface_line_thickness)
 
         return lined_frame
+
+    def show_threshold(self, threshold):
+        ret, origin_frame = self.capture_device.read()
+        _, binary = cv2.threshold(origin_frame, threshold, 255, cv2.THRESH_BINARY)
+
+        return binary

@@ -4,7 +4,8 @@ from skimage.measure import LineModelND
 from services.data_service import ProcessedImage, BoundingBox
 
 
-def erode(image):
+#TODO use threshold configured by slider in calibration
+def erode(image, threshold):
     """
     :param image: Image input that needs to be eroded
     :type image: ProcessedImage
@@ -14,11 +15,11 @@ def erode(image):
     # Taking a matrix of size 5 as the kernel
     kernel = np.ones((4, 4), np.uint8)
     img_erosion = cv2.erode(image.image, kernel, iterations=1)
-    _, eroded_image = cv2.threshold(img_erosion, 30, 255, cv2.THRESH_BINARY)
+    _, eroded_image = cv2.threshold(img_erosion, threshold, 255, cv2.THRESH_BINARY)
     return eroded_image
 
 
-def segment(processed_image):
+def segment(processed_image, threshold):
     """
     Determines a bounding box for the part of the image that changed.
 
@@ -29,7 +30,7 @@ def segment(processed_image):
     """
     # Get binary image by applying a threshold
     image = cv2.cvtColor(processed_image.image, cv2.COLOR_BGR2GRAY)
-    _, binary = cv2.threshold(image, 30, 255, cv2.THRESH_BINARY)
+    _, binary = cv2.threshold(image, threshold, 255, cv2.THRESH_BINARY)
 
     # applying morphological operation to join detached segments
     rect_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (30, 30))

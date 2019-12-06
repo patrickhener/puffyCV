@@ -8,9 +8,9 @@ from services.data_service import ProcessedImage
 from services.display_service import display_with_information
 
 
-def process_input(processed_image):
-    processed_image.image = erode(processed_image)
-    processed_image.set_bounding_box(segment(processed_image))
+def process_input(processed_image, threshold):
+    processed_image.image = erode(processed_image, threshold)
+    processed_image.set_bounding_box(segment(processed_image, threshold))
     processed_image.set_darts_axis(find_darts_axis(processed_image))
     display_with_information(processed_image)
 
@@ -41,7 +41,8 @@ class GameLoop:
         asynchronous task
         """
 
-        while self.capturing: self.process()
+        while self.capturing:
+            self.process()
 
         # When everything done, release the capture devices
         for captured_input in self.devices:
@@ -66,4 +67,4 @@ class GameLoop:
                     processed_image.set_darts_board_offset(device.surface_y, device.surface_center)
                     processed_image.set_roi_offset(device.roi_pos_y, device.roi_height)
                     # do image processing
-                    process_input(processed_image)
+                    process_input(processed_image, device.threshold)

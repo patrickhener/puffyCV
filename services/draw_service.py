@@ -6,7 +6,7 @@ from puffyCV._version import __version__
 from services.logging_service import initialize_logging
 
 log = initialize_logging()
-pi = 3.14159
+pi = np.pi
 
 
 def draw_line(img, point1, point2, color, thickness):
@@ -24,12 +24,12 @@ def draw_banner():
     banner += "██████╗ ██╗   ██╗███████╗███████╗██╗   ██╗ ██████╗██╗   ██╗\n"
     banner += "██╔══██╗██║   ██║██╔════╝██╔════╝╚██╗ ██╔╝██╔════╝██║   ██║   by Patrick Hener\n"
     banner += "██████╔╝██║   ██║█████╗  █████╗   ╚████╔╝ ██║     ██║   ██║   patrickhener@gmx.de\n"
-    banner += "██╔═══╝ ██║   ██║██╔══╝  ██╔══╝    ╚██╔╝  ██║     ╚██╗ ██╔╝   Version: {}, 2019-2020\n".format(__version__)
+    banner += "██╔═══╝ ██║   ██║██╔══╝  ██╔══╝    ╚██╔╝  ██║     ╚██╗ ██╔╝   Version: {}, 2019-2020\n".\
+        format(__version__)
     banner += "██║     ╚██████╔╝██║     ██║        ██║   ╚██████╗ ╚████╔╝    http://puffycv.rtfd.io/\n"
     banner += "╚═╝      ╚═════╝ ╚═╝     ╚═╝        ╚═╝    ╚═════╝  ╚═══╝\n"
     banner += "\n"
     return banner
-
 
 
 class Board(object):
@@ -114,8 +114,8 @@ class Board(object):
             3, 19, 7, 16, 8
         ]
 
-        start_rad_sector = -3.14159
-        rad_sector_step = 0.314159
+        start_rad_sector = pi * -1
+        rad_sector_step = pi * 0.1
         rad_sector = start_rad_sector
         for sector in sectors:
             self.draw_string(
