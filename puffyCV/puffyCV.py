@@ -49,7 +49,9 @@ def main():
             cam_config = get_config(device)
             cam_service = WebCamCapturingDevice(cam_config.get("device_id"), cam_config.get("roi_pos_y"),
                                                 cam_config.get("roi_height"), cam_config.get("surface_y"),
-                                                cam_config.get("surface_center"), cam_config.get("threshold"))
+                                                cam_config.get("surface_center"), cam_config.get("threshold"),
+                                                cam_config.get("fov"), cam_config.get("bull_distance"),
+                                                cam_config.get("position"))
             cams.append(cam_service)
 
         game_loop = GameLoop(cams)

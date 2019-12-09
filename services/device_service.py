@@ -32,8 +32,8 @@ class WebCamCapturingDevice(CapturingDevice):
 
     """
 
-    def __init__(self, device_id, roi_pos_y, roi_height, surface_y, surface_center, threshold,
-                 resolution_width=1280, resolution_height=720):
+    def __init__(self, device_id, roi_pos_y, roi_height, surface_y, surface_center, threshold, fov, bull_distance,
+                 position, resolution_width=1280, resolution_height=720):
         self.device_id = device_id
         self.resolution_width = resolution_width
         self.resolution_height = resolution_height
@@ -42,6 +42,9 @@ class WebCamCapturingDevice(CapturingDevice):
         self.surface_y = surface_y
         self.surface_center = surface_center
         self.threshold = threshold
+        self.fov = fov
+        self.bull_distance = bull_distance
+        self.position = position
         self.capture_device = get_capture_device(device_id, resolution_width, resolution_height)
         self.previous_frame = []
         self.recorded_frame = []

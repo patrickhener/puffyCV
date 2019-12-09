@@ -27,7 +27,7 @@ text_color = (255, 255, 255)
 def display_with_information(processed_image):
     """
     Displays a processed image with all additional information (like dartboard level, darts axis etc.) in a
-    seperate window.
+    seperate window. Also displays Board for ray projection
 
     :param processed_image: The processed image which wraps the image itself and all additional information
     :type processed_image: ProcessedImage
@@ -101,7 +101,7 @@ def display_with_information(processed_image):
 
 def display_board(image):
     # show images
-    cv2.imshow('prjection', image)
+    cv2.imshow('projection', image)
     c = cv2.waitKey(1)
     if 'q' == chr(c & 255):
         log.info("Caught pressing 'q', exiting ...")
