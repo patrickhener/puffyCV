@@ -1,5 +1,6 @@
 # Introduction
 Dart score recognition using openCV (This is a rewrite and progression of what Niels Lüdemann did with [cvDarts](https://github.com/nluede/cvdarts))
+Also this project was inspired by this project [YellowFive5/DartboardRecognition](https://github.com/YellowFive5/DartboardRecognition)
 
 # Documentation
 For documentation refer to:  
