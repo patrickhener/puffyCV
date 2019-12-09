@@ -12,6 +12,7 @@ from services.draw_service import Board, draw_banner
 from services.device_service import WebCamCapturingDevice
 from services.config_service import get_config
 from services.game_service import GameLoop
+from services.testing_service import test_for_cams
 
 log = initialize_logging()
 
@@ -34,6 +35,14 @@ def main():
         else:
             device_id = int(args.DEVICE_IDS[0])
         calibrate(device_id)
+    elif args.MODE == "camtest":
+        result = test_for_cams()
+        for key in result:
+            if result[key]:
+                log.info("Video Device with ID {} is an accessible camera".format(key))
+            else:
+                log.error("Video Device with ID {} is not an accessible camera".format(key))
+        sys.exit()
     elif args.MODE == "runtest":
         cams = []
         for device in args.DEVICE_IDS:
