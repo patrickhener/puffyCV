@@ -5,7 +5,7 @@ from services.detector_service import has_new_images
 from services.processor_service import erode, segment, find_darts_axis
 from services.data_service import ProcessedImage
 from services.display_service import display_with_information, display_board
-from services.draw_service import Board, draw_line
+from services.draw_service import Board, draw_line, draw_circle
 from services.measuring_service import ray_projection
 
 
@@ -76,6 +76,8 @@ class GameLoop:
                         board_image = draw_line(board_image, cam_setup_point, ray_point, (0, 0, 255), 1)
                     except:
                         pass
+                    # test = ray_projection(processed_image, device)
+                    # board_image = draw_circle(board_image, test, 1, (255, 255, 0), 1)
 
-                    # display board
-                    display_board(board_image)
+            # display board
+            display_board(board_image)

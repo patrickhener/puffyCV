@@ -19,6 +19,11 @@ def draw_rectangle(img, top_left, bottom_right, color, thickness):
     return img
 
 
+def draw_circle(img, center_coord, radius, color, thickness):
+    img = cv2.circle(img, center_coord, radius, color, thickness)
+    return img
+
+
 def draw_banner():
     banner =  "\n"
     banner += "██████╗ ██╗   ██╗███████╗███████╗██╗   ██╗ ██████╗██╗   ██╗\n"

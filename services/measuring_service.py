@@ -2,13 +2,20 @@ import numpy as np
 import math
 
 pi = np.pi
+projection_center_point = (400, 400)
 
 
 def find_angle(point1, point2):
-    return math.atan2(point2[1] - point1[1], point2[0] - point1[0])
+    angle = math.atan2(point2[1] - point1[1], point2[0] - point1[0])
+    return angle
 
 
-def calibrate_cam_setup_point(device, projection_center_point):
+def find_distance(point1, point2):
+    distance = math.sqrt(math.pow(point1[0] - point2[0], 2) + math.pow(point1[1] - point2[1], 2))
+    return distance
+
+
+def calibrate_cam_setup_point(device):
     start_rad_sector = pi * -1
     rad_sector_step = pi / 10
     dartboard_diameter_pixels = 800
@@ -36,29 +43,31 @@ def ray_projection(processed_image, device):
     if processed_image is not None:
         line = processed_image.darts_axis
         if line is not None:
-            # TODO projection ray
-            # add ray line to projection/call projection routine
             # 1. Translate cam surface POI to dartboard projection
-            projection_center_point = (device.resolution_width / 2, device.resolution_height / 2)
+            # TODO replace x_value as start for distance with real Point (x, y) of intersection with dart level
             x_value = int(processed_image.bounding_box.x +
                           processed_image.darts_axis[len(processed_image.darts_axis) - 1])
+            surface_center_point = [None, None]
+            surface_center_point[0] = processed_image.darts_board_center
+            surface_center_point[1] = processed_image.darts_board_offset
+            cam_poi = [None, None]
+            cam_poi[0] = x_value
+            cam_poi[1] = processed_image.darts_board_offset
 
-            frame_width = device.resolution_width
-            frame_semi_width = frame_width / 2
-            cam_fov = device.fov
-            cam_fov_semi_angle = cam_fov / 2
-            projection_to_center = [0, 0]
-            surface_poi_to_center_distance = processed_image.darts_board_center - x_value
+            frame_semi_width = device.resolution_width / 2
+            cam_fov_semi_angle = device.fov / 2
+            projection_to_center = [None, None]
+            surface_poi_to_center_distance = find_distance(surface_center_point, cam_poi)
             if surface_poi_to_center_distance < 0:
                 surface_poi_to_center_distance *= -1
             projection_cam_to_center_distance = frame_semi_width / math.sin(pi * cam_fov_semi_angle / 180.0) * \
-                                                math.pow(surface_poi_to_center_distance, 2)
+                                                math.cos(pi * cam_fov_semi_angle / 180.0)
             projection_cam_to_poi_distance = math.sqrt(math.pow(projection_cam_to_center_distance, 2) +
                                                        math.pow(surface_poi_to_center_distance, 2))
             projection_poi_to_center_distance = math.sqrt(math.pow(projection_cam_to_poi_distance, 2) -
                                                           math.pow(projection_cam_to_center_distance, 2))
             poi_cam_center_angle = math.asin(projection_poi_to_center_distance / projection_cam_to_poi_distance)
-            cam_setup_point = calibrate_cam_setup_point(device, projection_center_point)
+            cam_setup_point = calibrate_cam_setup_point(device)
             cam_to_bull_angle = find_angle(cam_setup_point, projection_center_point)
 
             projection_to_center[0] = cam_setup_point[0] - math.cos(cam_to_bull_angle) * \
@@ -66,7 +75,7 @@ def ray_projection(processed_image, device):
             projection_to_center[1] = cam_setup_point[0] - math.sin(cam_to_bull_angle) * \
                                      projection_cam_to_center_distance
 
-            projection_poi = [0, 0]
+            projection_poi = [None, None]
             projection_poi[0] = cam_setup_point[0] + math.cos(cam_to_bull_angle + poi_cam_center_angle)
             projection_poi[1] = cam_setup_point[1] + math.sin(cam_to_bull_angle + poi_cam_center_angle)
 
@@ -77,3 +86,4 @@ def ray_projection(processed_image, device):
             ray_point[1] = int(cam_setup_point[1] + math.sin(angle) * 2000)
 
             return tuple(cam_setup_point), tuple(ray_point)
+            #return tuple(projection_center_point)
