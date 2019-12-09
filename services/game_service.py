@@ -5,8 +5,13 @@ from services.detector_service import has_new_images
 from services.processor_service import erode, segment, find_darts_axis
 from services.data_service import ProcessedImage
 from services.display_service import display_with_information, display_board
-from services.draw_service import Board, draw_line, draw_circle
+from services.draw_service import Board, draw_line, board_resolution
 from services.measuring_service import ray_projection
+from services.ray_service import Ray
+from services.throw_service import ThrowService
+from services.logging_service import initialize_logging
+
+log = initialize_logging()
 
 
 def process_input(processed_image, threshold):
@@ -53,11 +58,12 @@ class GameLoop:
 
     def process(self):
         # First initialize projection
-        board_image = Board(800).projection_prepare()
+        board_image = Board(board_resolution).projection_prepare()
         for device in self.devices:
             device.process_image()
 
         if has_new_images(self.devices):
+            throw = ThrowService()
             for device in self.devices:
                 latest_frame = device.fetch_latest_frame()
                 if not latest_frame.all():
@@ -74,10 +80,19 @@ class GameLoop:
                     try:
                         cam_setup_point, ray_point = ray_projection(processed_image, device)
                         board_image = draw_line(board_image, cam_setup_point, ray_point, (0, 0, 255), 1)
+                        ray = Ray(device.device_id, cam_setup_point, ray_point)
+                        throw.save_ray(ray)
                     except:
                         pass
-                    # test = ray_projection(processed_image, device)
-                    # board_image = draw_circle(board_image, test, 1, (255, 255, 0), 1)
 
             # display board
             display_board(board_image)
+
+            # Calculate and send throw
+            try:
+                poi = throw.calculate_poi()
+                sector, multiplier = throw.calculate_value(poi)
+                log.debug("Throw is {} {}".format(multiplier, sector))
+                throw.clear_rays()
+            except:
+                log.debug("Exception in calculating and sending throw")

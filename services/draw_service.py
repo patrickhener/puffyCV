@@ -8,6 +8,13 @@ from services.logging_service import initialize_logging
 log = initialize_logging()
 pi = np.pi
 
+global board_resolution
+global projection_coefficient
+global projection_center_point
+board_resolution = 800
+projection_coefficient = 2
+projection_center_point = (int(board_resolution/2), int(board_resolution/2))
+
 
 def draw_line(img, point1, point2, color, thickness):
     img = cv2.line(img, point1, point2, color, thickness)
@@ -51,13 +58,11 @@ class Board(object):
             self.img = img
         else:
             self.img = np.zeros((self.frame_size, self.frame_size, 3), np.uint8)
-        self.projection_center_point = (int(self.frame_size / 2), int(self.frame_size/2))
         self.text_font = cv2.FONT_HERSHEY_SIMPLEX
         self.line_type = cv2.LINE_AA
         self.text_color = (255, 255, 255)
         self.line_color = (255, 255, 255)
         self.text_scale = 1
-        self.projection_coefficient = 2
 
     def draw_line(self, point1, point2, color, thickness):
         self.img = cv2.line(self.img, point1, point2, color, thickness)
@@ -84,30 +89,22 @@ class Board(object):
         :returns: img object
         """
         # Draw the circles of the board
-        self.draw_circle(self.projection_center_point, self.projection_coefficient * 7, self.line_color, 1)
-        self.draw_circle(self.projection_center_point, self.projection_coefficient * 17, self.line_color, 1)
-        self.draw_circle(self.projection_center_point, self.projection_coefficient * 95, self.line_color, 1)
-        self.draw_circle(self.projection_center_point, self.projection_coefficient * 105, self.line_color, 1)
-        self.draw_circle(self.projection_center_point, self.projection_coefficient * 160, self.line_color, 1)
-        self.draw_circle(self.projection_center_point, self.projection_coefficient * 170, self.line_color, 1)
+        self.draw_circle(projection_center_point, projection_coefficient * 7, self.line_color, 1)
+        self.draw_circle(projection_center_point, projection_coefficient * 17, self.line_color, 1)
+        self.draw_circle(projection_center_point, projection_coefficient * 95, self.line_color, 1)
+        self.draw_circle(projection_center_point, projection_coefficient * 105, self.line_color, 1)
+        self.draw_circle(projection_center_point, projection_coefficient * 160, self.line_color, 1)
+        self.draw_circle(projection_center_point, projection_coefficient * 170, self.line_color, 1)
 
         # Draw segment lines
         for i in range(0, 360, 9):
             segment_point1 = (
-                    round(
-                        self.projection_center_point[0] + math.cos(pi/10 * i - pi/20) * self.projection_coefficient *
-                        170),
-                    round(
-                        self.projection_center_point[1] + math.sin(pi/10 * i - pi/20) * self.projection_coefficient *
-                        170)
+                    round(projection_center_point[0] + math.cos(pi/10 * i - pi/20) * projection_coefficient * 170),
+                    round(projection_center_point[1] + math.sin(pi/10 * i - pi/20) * projection_coefficient * 170)
             )
             segment_point2 = (
-                round(
-                    self.projection_center_point[0] + math.cos(pi/10 * i - pi/20) * self.projection_coefficient * 17
-                ),
-                round(
-                    self.projection_center_point[1] + math.sin(pi/10 * i - pi/20) * self.projection_coefficient * 17
-                )
+                round(projection_center_point[0] + math.cos(pi/10 * i - pi/20) * projection_coefficient * 17),
+                round(projection_center_point[1] + math.sin(pi/10 * i - pi/20) * projection_coefficient * 17)
             )
             self.draw_line(segment_point1, segment_point2, self.line_color, 1)
 
@@ -125,8 +122,8 @@ class Board(object):
         for sector in sectors:
             self.draw_string(
                 str(sector),
-                (round(self.projection_center_point[0] - 20 + math.cos(rad_sector) * self.projection_coefficient * 190),
-                 round(self.projection_center_point[1] + 10 + math.sin(rad_sector) * self.projection_coefficient * 190))
+                (round(projection_center_point[0] - 20 + math.cos(rad_sector) * projection_coefficient * 190),
+                 round(projection_center_point[1] + 10 + math.sin(rad_sector) * projection_coefficient * 190))
             )
             rad_sector += rad_sector_step
 

@@ -1,18 +1,27 @@
 import numpy as np
 import math
 
+from services.draw_service import projection_center_point
+from services.logging_service import initialize_logging
+
+log = initialize_logging()
 pi = np.pi
-projection_center_point = (400, 400)
 
 
 def find_angle(point1, point2):
-    angle = math.atan2(point2[1] - point1[1], point2[0] - point1[0])
-    return angle
+    try:
+        angle = math.atan2(point2[1] - point1[1], point2[0] - point1[0])
+        return angle
+    except:
+        log.debug("Exception caught in find_angle")
 
 
 def find_distance(point1, point2):
-    distance = math.sqrt(math.pow(point1[0] - point2[0], 2) + math.pow(point1[1] - point2[1], 2))
-    return distance
+    try:
+        distance = math.sqrt(math.pow(point1[0] - point2[0], 2) + math.pow(point1[1] - point2[1], 2))
+        return distance
+    except:
+        log.debug("Exception caught in find_distance")
 
 
 def calibrate_cam_setup_point(device):
@@ -44,15 +53,10 @@ def ray_projection(processed_image, device):
         line = processed_image.darts_axis
         if line is not None:
             # 1. Translate cam surface POI to dartboard projection
-            # TODO replace x_value as start for distance with real Point (x, y) of intersection with dart level
             x_value = int(processed_image.bounding_box.x +
                           processed_image.darts_axis[len(processed_image.darts_axis) - 1])
-            surface_center_point = [None, None]
-            surface_center_point[0] = processed_image.darts_board_center
-            surface_center_point[1] = processed_image.darts_board_offset
-            cam_poi = [None, None]
-            cam_poi[0] = x_value
-            cam_poi[1] = processed_image.darts_board_offset
+            surface_center_point = [processed_image.darts_board_center, processed_image.darts_board_offset]
+            cam_poi = [x_value, processed_image.darts_board_offset]
 
             frame_semi_width = device.resolution_width / 2
             cam_fov_semi_angle = device.fov / 2
@@ -86,4 +90,37 @@ def ray_projection(processed_image, device):
             ray_point[1] = int(cam_setup_point[1] + math.sin(angle) * 2000)
 
             return tuple(cam_setup_point), tuple(ray_point)
-            #return tuple(projection_center_point)
+
+
+def find_lines_intersection(line1_point1, line1_point2, line2_point1, line2_point2):
+    tolerance = 0.001
+    x1 = line1_point1[0]
+    y1 = line1_point1[1]
+    x2 = line1_point2[0]
+    y2 = line1_point2[1]
+    x3 = line2_point1[0]
+    y3 = line2_point1[1]
+    x4 = line2_point2[0]
+    y4 = line2_point2[1]
+    x = None
+    y = None
+
+    if math.fabs(x1 - x2) < tolerance:
+        m2 = (y4 - y3) / (x4 - x3)
+        c2 = -m2 * x3 + y3
+        x = x1
+        y = c2 + m2 * x1
+    elif math.fabs(x3 - x4) < tolerance:
+        m1 = (y2 - y1) / (x2 - x1)
+        c1 = -m1 * x1 + y1
+        x = x3
+        y = c1 + m1 * x3
+    else:
+        m1 = (y2 - y1) / (x2 - x1)
+        c1 = -m1 * x1 + y1
+        m2 = (y4 - y3) / (x4 - x3)
+        c2 = -m2 * x3 + y3
+        x = (c1 - c2) / (m2 - m1)
+        y = c2 + m2 * x
+
+    return [x, y]

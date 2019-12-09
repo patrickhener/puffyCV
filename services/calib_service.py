@@ -2,7 +2,7 @@ import cv2
 from services.config_service import initialize_config, get_config, set_config
 from services.device_service import WebCamCapturingDevice
 from services.logging_service import initialize_logging
-from services.processor_service import ProcessedImage
+from services.config_service import return_config_as_device
 
 log = initialize_logging()
 
@@ -23,11 +23,7 @@ def calibrate(device_id):
         cam = WebCamCapturingDevice(device_id, 500, 20, 600, 640, 30, 85, 33, 9)
     else:
         log.info("Config found for device {}, loading".format(device_id))
-        cam_load = get_config(device_id)
-        cam = WebCamCapturingDevice(cam_load.get("device_id"), cam_load.get("roi_pos_y"), cam_load.get("roi_height"),
-                                    cam_load.get("surface_y"), cam_load.get("surface_center"),
-                                    cam_load.get("threshold"), cam_load.get("fov"), cam_load.get("bull_distance"),
-                                    cam_load.get("position"))
+        cam = return_config_as_device(device_id)
 
     log.info("To end calibration hit q")
     roi_pos_y = cam.roi_pos_y

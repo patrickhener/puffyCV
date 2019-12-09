@@ -8,9 +8,8 @@ from puffyCV.args import args
 
 from services.logging_service import initialize_logging
 from services.calib_service import calibrate
-from services.draw_service import Board, draw_banner
-from services.device_service import WebCamCapturingDevice
-from services.config_service import get_config
+from services.draw_service import Board, draw_banner, board_resolution
+from services.config_service import return_config_as_device
 from services.game_service import GameLoop
 from services.testing_service import test_for_cams
 
@@ -46,19 +45,12 @@ def main():
     elif args.MODE == "runtest":
         cams = []
         for device in args.DEVICE_IDS:
-            cam_config = get_config(device)
-            cam_service = WebCamCapturingDevice(cam_config.get("device_id"), cam_config.get("roi_pos_y"),
-                                                cam_config.get("roi_height"), cam_config.get("surface_y"),
-                                                cam_config.get("surface_center"), cam_config.get("threshold"),
-                                                cam_config.get("fov"), cam_config.get("bull_distance"),
-                                                cam_config.get("position"))
-            cams.append(cam_service)
-
+            cams.append(return_config_as_device(device))
         game_loop = GameLoop(cams)
         game_loop.run()
 
     elif args.MODE == "drawprojection":
-        draw = Board(900)
+        draw = Board(board_resolution)
         while True:
             cv2.imshow("test", draw.projection_prepare())
             c = cv2.waitKey(1)

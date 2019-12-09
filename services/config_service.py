@@ -3,6 +3,7 @@ import os
 import sys
 
 from services.logging_service import initialize_logging
+from services.device_service import WebCamCapturingDevice
 
 log = initialize_logging()
 
@@ -47,3 +48,14 @@ def initialize_config(device_id):
         return False
     else:
         return True
+
+
+def return_config_as_device(device_id):
+    cam_config = get_config(device_id)
+    cam_service = WebCamCapturingDevice(cam_config.get("device_id"), cam_config.get("roi_pos_y"),
+                                        cam_config.get("roi_height"), cam_config.get("surface_y"),
+                                        cam_config.get("surface_center"), cam_config.get("threshold"),
+                                        cam_config.get("fov"), cam_config.get("bull_distance"),
+                                        cam_config.get("position"))
+
+    return cam_service
