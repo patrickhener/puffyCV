@@ -1,8 +1,7 @@
 import cv2
-from services.config_service import initialize_config, get_config, set_config
+from services.config_service import initialize_config, set_config, return_config_as_device
 from services.device_service import WebCamCapturingDevice
 from services.logging_service import initialize_logging
-from services.config_service import return_config_as_device
 
 log = initialize_logging()
 

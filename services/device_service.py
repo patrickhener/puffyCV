@@ -1,6 +1,5 @@
 import cv2
 import numpy as np
-from threading import Thread
 
 from services.draw_service import draw_rectangle, draw_line
 
