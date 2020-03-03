@@ -1,4 +1,5 @@
 import cv2
+from puffyCV.args import args
 from services.config_service import initialize_config, set_config, return_config_as_device
 from services.device_service import WebCamCapturingDevice
 from services.logging_service import initialize_logging
@@ -19,7 +20,7 @@ def calibrate(device_id):
     log.info("Initializing device")
     if not initialize_config(device_id):
         log.info("No config found for device {}, creating dummy one".format(device_id))
-        cam = WebCamCapturingDevice(device_id, 500, 20, 600, 640, 30, 85, 33, 9)
+        cam = WebCamCapturingDevice(device_id, 500, 20, 600, int(args.WIDTH / 2), 30, 85, 33, 9, args.WIDTH, args.HEIGHT)
     else:
         log.info("Config found for device {}, loading".format(device_id))
         cam = return_config_as_device(device_id)
@@ -34,10 +35,10 @@ def calibrate(device_id):
     position = cam.position
 
     cv2.namedWindow("calibrate")
-    cv2.createTrackbar("roi_pos_y", "calibrate", roi_pos_y, 720, nothing)
+    cv2.createTrackbar("roi_pos_y", "calibrate", roi_pos_y, args.HEIGHT, nothing)
     cv2.createTrackbar("roi_height", "calibrate", roi_height, 200, nothing)
-    cv2.createTrackbar("surface_y", "calibrate", surface_y, 720, nothing)
-    cv2.createTrackbar("surface_center", "calibrate", surface_center, 1280, nothing)
+    cv2.createTrackbar("surface_y", "calibrate", surface_y, args.HEIGHT, nothing)
+    cv2.createTrackbar("surface_center", "calibrate", surface_center, args.WIDTH, nothing)
     cv2.createTrackbar("fov", "calibrate", fov, 180, nothing)
     cv2.createTrackbar("bull_distance_cm", "calibrate", bull_distance, 100, nothing)
     cv2.createTrackbar("position", "calibrate", position, 180, nothing)

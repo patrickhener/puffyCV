@@ -1,3 +1,6 @@
+# DISCLAIMER
+This project is still highly Work in Progress and therefore not in a working condition right now. Please do not expect it to recognise darts or handle cameras well. Also the documentation linked below is just initiated as a placeholder and does not yet contain any specific documentation on parameters or arguments used in the code. At this time I cannot provide support for anyone trying to get this working.
+
 # Introduction
 Dart score recognition using openCV (This is a rewrite and progression of what Niels Lüdemann did with [cvDarts](https://github.com/nluede/cvdarts))
 Also this project was inspired by this project [YellowFive5/DartboardRecognition](https://github.com/YellowFive5/DartboardRecognition)

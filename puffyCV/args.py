@@ -21,6 +21,33 @@ parser.add_argument(
 )
 
 parser.add_argument(
+    '-rw',
+    '--resolution-width',
+    dest="WIDTH",
+    default=1920,
+    type=int,
+    help="Resolution width of cameras in use (default: 1920)"
+)
+
+parser.add_argument(
+    '-rh',
+    '--resolution-height',
+    dest="HEIGHT",
+    default=1080,
+    type=int,
+    help="Resolution height of cameras in use (default: 1080)"
+)
+
+parser.add_argument(
+    '-pf',
+    '--pixel-format',
+    dest="PIXELFORMAT",
+    default="MJPG",
+    type=str,
+    help="Pixelformat of cameras in use (default: 'MJPG')"
+)
+
+parser.add_argument(
     '-sh',
     '--scoreboard-host',
     dest="SB-HOST",

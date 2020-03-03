@@ -1,6 +1,9 @@
 import cv2
+import sys
 import numpy as np
 
+from puffyCV.args import args
+from services.logging_service import initialize_logging
 from services.draw_service import draw_rectangle, draw_line
 
 roi_rectangle_color = (0, 255, 0)  # green
@@ -8,15 +11,27 @@ roi_rectanlge_thickness = 3
 surface_line_color = (0, 0, 255)  # red
 surface_line_thickness = 3
 
+logger = initialize_logging()
+
 # Threshold for the image difference of two frames. Value between 0 and 255. 0 means that there needs to be no
 # difference between two successive frames (which is obviously a bad idea), 255 is the biggest possible difference.
-IMAGE_DIFFERENCE_THRESHOLD = 20
+# IMAGE_DIFFERENCE_THRESHOLD = 20
 
 
 def get_capture_device(device_number, image_width, image_height):
     capture_device = cv2.VideoCapture(device_number)
     capture_device.set(cv2.CAP_PROP_FRAME_WIDTH, image_width)
     capture_device.set(cv2.CAP_PROP_FRAME_HEIGHT, image_height)
+    if args.PIXELFORMAT.upper() == 'MJPG':
+        capture_device.set(cv2.CAP_PROP_FOURCC,
+                           cv2.VideoWriter_fourcc('M', 'J', 'P', 'G'))
+    elif args.PIXELFORMAT.upper() == 'YUYV':
+        capture_device.set(cv2.CAP_PROP_FOURCC,
+                           cv2.VideoWriter_fourcc('Y', 'U', 'Y', 'V'))
+    else:
+        logger.error(
+            "Please specify a valid pixelformat (MJPG|YUYV). Exiting ...")
+        sys.exit(0)
     return capture_device
 
 
@@ -32,7 +47,7 @@ class WebCamCapturingDevice(CapturingDevice):
     """
 
     def __init__(self, device_id, roi_pos_y, roi_height, surface_y, surface_center, threshold, fov, bull_distance,
-                 position, resolution_width=1280, resolution_height=720):
+                 position, resolution_width=args.WIDTH, resolution_height=args.HEIGHT):
         self.device_id = device_id
         self.resolution_width = resolution_width
         self.resolution_height = resolution_height
@@ -44,7 +59,8 @@ class WebCamCapturingDevice(CapturingDevice):
         self.fov = fov
         self.bull_distance = bull_distance
         self.position = position
-        self.capture_device = get_capture_device(device_id, resolution_width, resolution_height)
+        self.capture_device = get_capture_device(
+            device_id, resolution_width, resolution_height)
         self.previous_frame = []
         self.recorded_frame = []
 
@@ -63,10 +79,12 @@ class WebCamCapturingDevice(CapturingDevice):
         _, frame = self.capture_device.read()
         diff = self.get_difference(frame)
 
-        white_pixels = np.sum(diff > IMAGE_DIFFERENCE_THRESHOLD)
+        white_pixels = np.sum(diff > self.threshold)
 
-        sixty_percent_of_all_pixels = (self.resolution_width * self.resolution_height) * 0.6
-        minimum_changed_pixels_threshold = (self.resolution_width * self.resolution_height) * 0.015
+        sixty_percent_of_all_pixels = (
+            self.resolution_width * self.resolution_height) * 0.6
+        minimum_changed_pixels_threshold = (
+            self.resolution_width * self.resolution_height) * 0.015
 
         if minimum_changed_pixels_threshold < white_pixels < sixty_percent_of_all_pixels:
             self.recorded_frame = diff
@@ -87,20 +105,24 @@ class WebCamCapturingDevice(CapturingDevice):
         # Draw ROI rectangle
         top_left = (0, roi_pos_y - roi_height)
         bottom_right = (self.resolution_width, roi_pos_y)
-        lined_frame = draw_rectangle(lined_frame, top_left, bottom_right, roi_rectangle_color, roi_rectanlge_thickness)
+        lined_frame = draw_rectangle(
+            lined_frame, top_left, bottom_right, roi_rectangle_color, roi_rectanlge_thickness)
         # Draw surface line
         line_x = (0, surface_y)
         line_y = (self.resolution_width, surface_y)
-        lined_frame = draw_line(lined_frame, line_x, line_y, surface_line_color, surface_line_thickness)
+        lined_frame = draw_line(
+            lined_frame, line_x, line_y, surface_line_color, surface_line_thickness)
         # Draw Bull orientation line
         center_line_1 = (surface_center, surface_y)
         center_line_2 = (center_line_1[0], surface_y - 50)
-        lined_frame = draw_line(lined_frame, center_line_1, center_line_2, surface_line_color, surface_line_thickness)
+        lined_frame = draw_line(
+            lined_frame, center_line_1, center_line_2, surface_line_color, surface_line_thickness)
 
         return lined_frame
 
     def show_threshold(self, threshold):
         ret, origin_frame = self.capture_device.read()
-        _, binary = cv2.threshold(origin_frame, threshold, 255, cv2.THRESH_BINARY)
+        _, binary = cv2.threshold(
+            origin_frame, threshold, 255, cv2.THRESH_BINARY)
 
         return binary

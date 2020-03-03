@@ -52,7 +52,7 @@ def main():
     elif args.MODE == "drawprojection":
         draw = Board(board_resolution)
         while True:
-            cv2.imshow("test", draw.projection_prepare())
+            cv2.imshow("Board Projection Test", draw.projection_prepare())
             c = cv2.waitKey(1)
             if 'q' == chr(c & 255):
                 break
